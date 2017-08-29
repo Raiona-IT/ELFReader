@@ -2,7 +2,7 @@
 
 int check_header(FILE *file)
 {
-    if(check_format(file) != 0)
+    if(check_elfformat(file) != 0)
     {
         fprintf(stderr, "[!] File not in ELF format.\n");
         return 1;
@@ -12,7 +12,7 @@ int check_header(FILE *file)
         fprintf(stdout, "[+] File is in ELF format.\n");
     }
 
-    int check = check_32_or_64(file);
+    int check = check_32or64(file);
     if(check == 1)
     {
         fprintf(stdout, "[+] x86 executable.\n");
@@ -30,7 +30,7 @@ int check_header(FILE *file)
     return 0;
 }
 
-int check_format(FILE *file)
+int check_elfformat(FILE *file)
 {
     unsigned char byte[4];
     int i;
@@ -49,7 +49,7 @@ int check_format(FILE *file)
 }
 
 
-int check_32_or_64(FILE *file)
+int check_32or64(FILE *file)
 {
     unsigned char byte;
     int i;
