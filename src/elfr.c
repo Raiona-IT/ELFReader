@@ -27,6 +27,21 @@ int main(int argc, char *argv[])
         fprintf(stdout, "[+] File is in ELF format.\n");
     }
 
+    int check = check_32_or_64(file);
+    if(check == 1)
+    {
+        fprintf(stderr, "[!] File is 32 bits.\n");
+    }
+    else if(check == 2)
+    {
+	    fprintf(stderr, "[!] File is 64 bits.\n");
+    }
+    else
+    {
+        fprintf(stderr, "[!] File unrecognized. \n");
+    }
+
+
     fclose(file);
     return 0;
 }
@@ -47,4 +62,26 @@ int check_format(FILE *file)
     }
 
     return 1;
+}
+
+
+int check_32_or_64(FILE *file)
+{
+    unsigned char byte;
+    int i;
+
+    byte = (char) fgetc(file);
+
+    fprintf(stdout, "The 5th byte is: %d \n",byte);
+
+    if(byte == 0x01)
+    {
+        return 1;
+    }
+    else if(byte == 0x02)
+    {
+        return 2;
+    }
+
+    return 3;
 }
