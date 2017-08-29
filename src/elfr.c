@@ -17,8 +17,34 @@ int main(int argc, char *argv[])
         return 2;
     }
 
-    // Do the parsing here
+    if(check_format(file) != 0)
+    {
+        fprintf(stderr, "[!] File not in ELF format.\n");
+        return 3;
+    }
+    else
+    {
+        fprintf(stdout, "[+] File is in ELF format.\n");
+    }
 
     fclose(file);
     return 0;
+}
+
+int check_format(FILE *file)
+{
+    unsigned char byte[4];
+    int i;
+
+    for(i = 0; i < 4; i++)
+    {
+        byte[i] = (char) fgetc(file);
+    }
+
+    if(byte[0] == 0x7f && byte[1] == 0x45 && byte[2] == 0x4c && byte[3] == 0x46)
+    {
+        return 0;
+    }
+
+    return 1;
 }
