@@ -11,5 +11,6 @@ struct elf_header
 int check_header(FILE *file);
 int check_elfformat(FILE *file);
 int check_32or64(FILE *file);
+int check_endianness(FILE *file);
 
 #endif

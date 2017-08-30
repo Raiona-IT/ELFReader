@@ -2,6 +2,9 @@
 
 int check_header(FILE *file)
 {
+
+    int check; //tmp var for appropriate function call manipulation
+
     if(check_elfformat(file) != 0)
     {
         fprintf(stderr, "[!] File not in ELF format.\n");
@@ -12,7 +15,7 @@ int check_header(FILE *file)
         fprintf(stdout, "[+] File is in ELF format.\n");
     }
 
-    int check = check_32or64(file);
+    check = check_32or64(file);
     if(check == 1)
     {
         fprintf(stdout, "[+] x86 executable.\n");
@@ -27,6 +30,20 @@ int check_header(FILE *file)
         return 2;
     }
 
+    check = check_endianness(file);
+    if(check == 1)
+    {
+        fprintf(stdout, "[+] little endian.\n");
+    }
+    else if(check == 2)
+    {
+	    fprintf(stdout, "[+] big endian.\n");
+    }
+    else
+    {
+        fprintf(stderr, "[!] Invalid header section. \n");
+        return 2;
+    }
     return 0;
 }
 
@@ -50,6 +67,26 @@ int check_elfformat(FILE *file)
 
 
 int check_32or64(FILE *file)
+{
+    unsigned char byte;
+    int i;
+
+    byte = (char) fgetc(file);
+
+    if(byte == 0x01)
+    {
+        return 1;
+    }
+    else if(byte == 0x02)
+    {
+        return 2;
+    }
+
+    return 3;
+}
+
+
+int check_endianness(FILE *file)
 {
     unsigned char byte;
     int i;
