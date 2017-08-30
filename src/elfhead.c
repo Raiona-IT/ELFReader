@@ -44,6 +44,18 @@ int check_header(FILE *file)
         fprintf(stderr, "[!] Invalid header section. \n");
         return 2;
     }
+
+    check = check_originality(file);
+    if(check == 1)
+    {
+        fprintf(stdout, "[+] original ELF. \n");
+    }
+    else
+    {
+        fprintf(stderr, "[!] newer version of ELF. \n");
+        return 2;
+    }
+
     return 0;
 }
 
@@ -103,4 +115,20 @@ int check_endianness(FILE *file)
     }
 
     return 3;
+}
+
+
+int check_originality(FILE *file)
+{
+        unsigned char byte;
+        int i;
+
+        byte = (char) fgetc(file);
+
+        if(byte == 0x01)
+        {
+            return 1;
+        }
+
+        return 2;
 }
