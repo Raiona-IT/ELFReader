@@ -17,41 +17,41 @@ int check_header(FILE *file)
     check = check_32or64(file);
     if(check == 1)
     {
-        fprintf(stdout, "[+] x86 executable.\n");
+        fprintf(stdout, "[+] Bit format:\t\tx86 executable.\n");
     }
     else if(check == 2)
     {
-	    fprintf(stdout, "[+] x86_64 executable.\n");
+	    fprintf(stdout, "[+] Bit format:\t\tx86_64 executable.\n");
     }
     else
     {
-        fprintf(stderr, "[!] Invalid header section. \n");
+        fprintf(stderr, "[!] Error:\t\tInvalid header section. \n");
         return 2;
     }
 
     check = check_endianness(file);
     if(check == 1)
     {
-        fprintf(stdout, "[+] little endian.\n");
+        fprintf(stdout, "[+] Endianess:\t\tLittle endian.\n");
     }
     else if(check == 2)
     {
-	    fprintf(stdout, "[+] big endian.\n");
+	    fprintf(stdout, "[+] Endianess:\t\tBig endian.\n");
     }
     else
     {
-        fprintf(stderr, "[!] Invalid header section. \n");
+        fprintf(stderr, "[!] Error:\t\tInvalid header section.\n");
         return 2;
     }
 
     check = check_originality(file);
     if(check == 1)
     {
-        fprintf(stdout, "[+] original ELF. \n");
+        fprintf(stdout, "[+] ELF Version:\tOriginal ELF. \n");
     }
     else
     {
-        fprintf(stdout, "[+] Not original ELF file version. \n");
+        fprintf(stdout, "[+] ELF Version:\tNot original ELF file version. \n");
     }
 
     return 0;
