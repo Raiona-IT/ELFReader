@@ -2,7 +2,6 @@
 
 int check_header(FILE *file)
 {
-
     int check; //tmp var for appropriate function call manipulation
 
     if(check_elfformat(file) != 0)
@@ -52,8 +51,7 @@ int check_header(FILE *file)
     }
     else
     {
-        fprintf(stderr, "[!] newer version of ELF. \n");
-        return 2;
+        fprintf(stdout, "[+] Not original ELF file version. \n");
     }
 
     return 0;
@@ -77,7 +75,6 @@ int check_elfformat(FILE *file)
     return 1;
 }
 
-
 int check_32or64(FILE *file)
 {
     unsigned char byte;
@@ -97,7 +94,6 @@ int check_32or64(FILE *file)
     return 3;
 }
 
-
 int check_endianness(FILE *file)
 {
     unsigned char byte;
@@ -116,7 +112,6 @@ int check_endianness(FILE *file)
 
     return 3;
 }
-
 
 int check_originality(FILE *file)
 {
