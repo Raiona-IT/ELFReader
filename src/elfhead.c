@@ -54,6 +54,85 @@ int check_header(FILE *file)
         fprintf(stdout, "[+] ELF Version:\tNot original ELF file version. \n");
     }
 
+    check = check_os(file);
+    if(check == 0)
+    {
+        fprintf(stdout, "[+] Operating System:\tSystem V.\n");
+    }
+    else if(check == 1)
+    {
+        fprintf(stdout, "[+] Operating System:\tHP-UX.\n");
+    }
+    else if(check == 2)
+    {
+        fprintf(stdout, "[+] Operating System:\tNetBSD.\n");
+    }
+    else if(check == 3)
+    {
+        fprintf(stdout, "[+] Operating System:\tLinux.\n");
+    }
+    else if(check == 4)
+    {
+        fprintf(stdout, "[+] Operating System:\tGNU Hurd.\n");
+    }
+    else if(check == 6)
+    {
+        fprintf(stdout, "[+] Operating System:\tSolaris.\n");
+    }
+    else if(check == 7)
+    {
+        fprintf(stdout, "[+] Operating System:\tAIX.\n");
+    }
+    else if(check == 8)
+    {
+        fprintf(stdout, "[+] Operating System:\tIRIX.\n");
+    }
+    else if(check == 9)
+    {
+        fprintf(stdout, "[+] Operating System:\tFreeBSD.\n");
+    }
+    else if(check == 10)
+    {
+        fprintf(stdout, "[+] Operating System:\tTru64.\n");
+    }
+    else if(check == 11)
+    {
+        fprintf(stdout, "[+] Operating System:\tNovell Modesto.\n");
+    }
+    else if(check == 12)
+    {
+        fprintf(stdout, "[+] Operating System:\tOpenBSD.\n");
+    }
+    else if(check == 13)
+    {
+        fprintf(stdout, "[+] Operating System:\tOpenVMS.\n");
+    }
+    else if(check == 14)
+    {
+        fprintf(stdout, "[+] Operating System:\tNonStop Kernel.\n");
+    }
+    else if(check == 15)
+    {
+        fprintf(stdout, "[+] Operating System:\tAROS.\n");
+    }
+    else if(check == 16)
+    {
+        fprintf(stdout, "[+] Operating System:\tFenix OS.\n");
+    }
+    else if(check == 17)
+    {
+        fprintf(stdout, "[+] Operating System:\tCloudABI.\n");
+    }
+    else if(check == 83)
+    {
+        fprintf(stdout, "[+] Operating System:\tSortix.\n");
+    }
+    else if(check == 84)
+    {
+        fprintf(stderr, "[!]Error:\tUnrecognised Operating System.\n");
+        return 2;
+    }
+
     return 0;
 }
 
@@ -78,7 +157,6 @@ int check_elfformat(FILE *file)
 int check_32or64(FILE *file)
 {
     unsigned char byte;
-    int i;
 
     byte = (char) fgetc(file);
 
@@ -97,7 +175,6 @@ int check_32or64(FILE *file)
 int check_endianness(FILE *file)
 {
     unsigned char byte;
-    int i;
 
     byte = (char) fgetc(file);
 
@@ -115,15 +192,99 @@ int check_endianness(FILE *file)
 
 int check_originality(FILE *file)
 {
-        unsigned char byte;
-        int i;
+    unsigned char byte;
 
-        byte = (char) fgetc(file);
+    byte = (char) fgetc(file);
 
-        if(byte == 0x01)
-        {
-            return 1;
-        }
+    if(byte == 0x01)
+    {
+        return 1;
+    }
 
+    return 2;
+}
+
+int check_os(FILE *file)
+{
+    unsigned char byte;
+
+    byte = (char) fgetc(file);
+    fprintf(stdout, "ASD  %d\n",byte);
+
+    byte = (char) fgetc(file);
+    fprintf(stdout, "ASD  %d\n",byte);
+    if(byte == 0x00)
+    {
+        return 0;
+    }
+    else if(byte == 0x01)
+    {
+        return 1;
+    }
+    else if(byte == 0x02)
+    {
         return 2;
+    }
+    else if(byte == 0x03)
+    {
+        return 3;
+    }
+    else if(byte == 0x04)
+    {
+        return 4;
+    }
+    else if(byte == 0x06)
+    {
+        return 6;
+    }
+    else if(byte == 0x07)
+    {
+        return 7;
+    }
+    else if(byte == 0x08)
+    {
+        return 8;
+    }
+    else if(byte == 0x09)
+    {
+        return 9;
+    }
+    else if(byte == 0x0A)
+    {
+        return 10;
+    }
+    else if(byte == 0x0B)
+    {
+        return 11;
+    }
+    else if(byte == 0x0C)
+    {
+        return 12;
+    }
+    else if(byte == 0x0D)
+    {
+        return 13;
+    }
+    else if(byte == 0x0E)
+    {
+        return 14;
+    }
+    else if(byte == 0x0F)
+    {
+        return 15;
+    }
+    else if(byte == 0x10)
+    {
+        return 16;
+    }
+    else if(byte == 0x11)
+    {
+        return 17;
+    }
+    else if(byte == 0x53)
+    {
+        return 83;
+    }
+
+    return 84;
 }

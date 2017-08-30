@@ -8,5 +8,6 @@ int check_elfformat(FILE *file);
 int check_32or64(FILE *file);
 int check_endianness(FILE *file);
 int check_originality(FILE *file);
+int check_os(FILE *file);
 
 #endif
