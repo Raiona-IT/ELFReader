@@ -144,6 +144,32 @@ int check_header(FILE *file)
         fprintf(stderr, "[!] Error:\t\tSome bytes that are meant to be unused, are actually used.\n");
     }
 
+    check = check_type(file);
+    if(check == 0)
+    {
+        fprintf(stdout, "[+] ELF Type:\t\tNo file type.\n");
+    }
+    else if(check == 1)
+    {
+        fprintf(stdout, "[+] ELF Type:\t\tRelocatable file.\n");
+    }
+    else if(check == 2)
+    {
+        fprintf(stdout, "[+] ELF Type:\t\tExecutable file.\n");
+    }
+    else if(check == 3)
+    {
+        fprintf(stdout, "[+] ELF Type:\t\tShared object file.\n");
+    }
+    else if(check == 4)
+    {
+        fprintf(stdout, "[+] ELF Type:\t\tCore file.\n");
+    }
+    else
+    {
+        fprintf(stderr, "[!] Error:\t\tUnrecognised file type.\n");
+    }
+
     return 0;
 }
 
@@ -314,3 +340,37 @@ int check_unusedbytes(FILE *file)
 
     return breakpoint;
 }
+
+int check_type(FILE *file)
+{
+    unsigned char byte[2];//big endian reading. 2nd byte is unused
+    int i;
+
+    for(i = 0; i < 2; i++)
+    {
+        byte[i] = (char) fgetc(file);
+    }
+
+    if(byte[0] == 0x00)
+    {
+        return 0;
+    }
+    else if(byte[0] == 0x01)
+    {
+        return 1;
+    }
+    else if(byte[0] == 0x02)
+    {
+        return 2;
+    }
+    else if(byte[0] == 0x03)
+    {
+        return 3;
+    }
+    else if(byte[0] == 0x04)
+    {
+        return 4;
+    }
+
+    return 5;
+ }
