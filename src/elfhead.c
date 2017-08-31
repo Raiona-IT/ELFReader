@@ -129,8 +129,19 @@ int check_header(FILE *file)
     }
     else if(check == 84)
     {
-        fprintf(stderr, "[!]Error:\tUnrecognised Operating System.\n");
+        fprintf(stderr, "[!]Error:\t\tUnrecognised Operating System.\n");
         return 2;
+    }
+
+    //this section does not need to be printed actually
+    check = check_unusedbytes(file);
+    if(check == 0)
+    {
+        fprintf(stdout, "[+] Unused bytes:\tBytes 0x09 to 0x0F are unused (0x00).\n");
+    }
+    else
+    {
+        fprintf(stderr, "[!] Error:\t\tSome bytes that are meant to be unused, are actually used.\n");
     }
 
     return 0;
@@ -209,10 +220,7 @@ int check_os(FILE *file)
     unsigned char byte;
 
     byte = (char) fgetc(file);
-    fprintf(stdout, "ASD  %d\n",byte);
 
-    byte = (char) fgetc(file);
-    fprintf(stdout, "ASD  %d\n",byte);
     if(byte == 0x00)
     {
         return 0;
@@ -287,4 +295,22 @@ int check_os(FILE *file)
     }
 
     return 84;
+}
+
+int check_unusedbytes(FILE *file)
+{
+    unsigned char byte;
+    int i;
+    int breakpoint = 0; //var used for continous bytes check breakpoint
+
+    for(i = 0; i < 8; i++)
+    {
+        byte = (char) fgetc(file);
+        if(byte != 0x00)
+        {
+            breakpoint = 1;
+        }
+    }
+
+    return breakpoint;
 }
