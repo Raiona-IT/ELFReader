@@ -75,59 +75,59 @@ int check_header(FILE *file)
     {
         fprintf(stdout, "[+] Operating System:\tGNU Hurd.\n");
     }
-    else if(check == 6)
+    else if(check == 5)
     {
         fprintf(stdout, "[+] Operating System:\tSolaris.\n");
     }
-    else if(check == 7)
+    else if(check == 6)
     {
         fprintf(stdout, "[+] Operating System:\tAIX.\n");
     }
-    else if(check == 8)
+    else if(check == 7)
     {
         fprintf(stdout, "[+] Operating System:\tIRIX.\n");
     }
-    else if(check == 9)
+    else if(check == 8)
     {
         fprintf(stdout, "[+] Operating System:\tFreeBSD.\n");
     }
-    else if(check == 10)
+    else if(check == 9)
     {
         fprintf(stdout, "[+] Operating System:\tTru64.\n");
     }
-    else if(check == 11)
+    else if(check == 10)
     {
         fprintf(stdout, "[+] Operating System:\tNovell Modesto.\n");
     }
-    else if(check == 12)
+    else if(check == 11)
     {
         fprintf(stdout, "[+] Operating System:\tOpenBSD.\n");
     }
-    else if(check == 13)
+    else if(check == 12)
     {
         fprintf(stdout, "[+] Operating System:\tOpenVMS.\n");
     }
-    else if(check == 14)
+    else if(check == 13)
     {
         fprintf(stdout, "[+] Operating System:\tNonStop Kernel.\n");
     }
-    else if(check == 15)
+    else if(check == 14)
     {
         fprintf(stdout, "[+] Operating System:\tAROS.\n");
     }
-    else if(check == 16)
+    else if(check == 15)
     {
         fprintf(stdout, "[+] Operating System:\tFenix OS.\n");
     }
-    else if(check == 17)
+    else if(check == 16)
     {
         fprintf(stdout, "[+] Operating System:\tCloudABI.\n");
     }
-    else if(check == 83)
+    else if(check == 17)
     {
         fprintf(stdout, "[+] Operating System:\tSortix.\n");
     }
-    else if(check == 84)
+    else
     {
         fprintf(stderr, "[!]Error:\t\tUnrecognised Operating System.\n");
         return 2;
@@ -142,6 +142,7 @@ int check_header(FILE *file)
     else
     {
         fprintf(stderr, "[!] Error:\t\tSome bytes that are meant to be unused, are actually used.\n");
+        return 2;
     }
 
     check = check_type(file);
@@ -165,9 +166,69 @@ int check_header(FILE *file)
     {
         fprintf(stdout, "[+] ELF Type:\t\tCore file.\n");
     }
+    else if(check == 5 || check == 6)
+    {
+        fprintf(stdout, "[+] ELF Type:\t\tProcessor Specific file.\n");
+    }
     else
     {
         fprintf(stderr, "[!] Error:\t\tUnrecognised file type.\n");
+        return 2;
+    }
+
+    check = check_instructionset(file);
+    if(check == 0)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tNo specific instruction set.\n");
+    }
+    else if(check == 1)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tSPARC.\n");
+    }
+    else if(check == 2)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tx86.\n");
+    }
+    else if(check == 3)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tMIPS.\n");
+    }
+    else if(check == 4)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tPowerPC.\n");
+    }
+    else if(check == 5)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tS390.\n");
+    }
+    else if(check == 6)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tARM.\n");
+    }
+    else if(check == 7)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tSuperH.\n");
+    }
+    else if(check == 8)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tIA-64.\n");
+    }
+    else if(check == 9)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tx86-64.\n");
+    }
+    else if(check == 10)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tAArch64.\n");
+    }
+    else if(check == 11)
+    {
+        fprintf(stdout, "[+] Instruction Set:\tRISC-V.\n");
+    }
+    else
+    {
+        fprintf(stderr, "[!] Error:\t\tUnrecognised Instruction Set.\n");
+        return 2;
     }
 
     return 0;
@@ -269,58 +330,58 @@ int check_os(FILE *file)
     }
     else if(byte == 0x06)
     {
-        return 6;
+        return 5;
     }
     else if(byte == 0x07)
     {
-        return 7;
+        return 6;
     }
     else if(byte == 0x08)
     {
-        return 8;
+        return 7;
     }
     else if(byte == 0x09)
     {
-        return 9;
+        return 8;
     }
     else if(byte == 0x0A)
     {
-        return 10;
+        return 9;
     }
     else if(byte == 0x0B)
     {
-        return 11;
+        return 10;
     }
     else if(byte == 0x0C)
     {
-        return 12;
+        return 11;
     }
     else if(byte == 0x0D)
     {
-        return 13;
+        return 12;
     }
     else if(byte == 0x0E)
     {
-        return 14;
+        return 13;
     }
     else if(byte == 0x0F)
     {
-        return 15;
+        return 14;
     }
     else if(byte == 0x10)
     {
-        return 16;
+        return 15;
     }
     else if(byte == 0x11)
     {
-        return 17;
+        return 16;
     }
     else if(byte == 0x53)
     {
-        return 83;
+        return 17;
     }
 
-    return 84;
+    return 18;
 }
 
 int check_unusedbytes(FILE *file)
@@ -371,6 +432,76 @@ int check_type(FILE *file)
     {
         return 4;
     }
+    else if(byte[0] == 0xFF && byte[1] == 0x00)
+    {
+        return 5;
+    }
+    else if(byte[0] == 0xFF && byte[1] == 0xFF)
+    {
+        return 6;
+    }
 
-    return 5;
+    return 7;
+ }
+
+int check_instructionset(FILE *file)
+{
+    unsigned char byte[2];//big endian. 2nd byte is unused
+    int i;
+
+    for(i = 0; i < 2; i++)
+    {
+        byte[i] = (char) fgetc(file);
+    }
+
+    if(byte[0] == 0x00)
+    {
+        return 0;
+    }
+    else if(byte[0] == 0x02)
+    {
+        return 1;
+    }
+    else if(byte[0] == 0x03)
+    {
+        return 2;
+    }
+    else if(byte[0] == 0x08)
+    {
+        return 3;
+    }
+    else if(byte[0] == 0x14)
+    {
+        return 4;
+    }
+    else if(byte[0] == 0x16)
+    {
+        return 5;
+    }
+    else if(byte[0] == 0x28)
+    {
+        return 6;
+    }
+    else if(byte[0] == 0x2A)
+    {
+        return 7;
+    }
+    else if(byte[0] == 0x32)
+    {
+        return 8;
+    }
+    else if(byte[0] == 0x3E)
+    {
+        return 9;
+    }
+    else if(byte[0] == 0xB7)
+    {
+        return  10;
+    }
+    else if(byte[0] == 0xB7)
+    {
+        return 11;
+    }
+
+    return 12;
  }

@@ -14,5 +14,6 @@ int check_unusedbytes(FILE *file);
 //===end of e_ident===
 
 int check_type(FILE *file);
+int check_instructionset(FILE *file);
 
 #endif
