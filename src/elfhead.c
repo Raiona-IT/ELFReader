@@ -231,6 +231,16 @@ int check_header(FILE *file)
         return 2;
     }
 
+    check = check_version(file);
+    if(check == 0)
+    {
+        fprintf(stdout, "[+] Version:\t\tOriginal version of ELF.\n");
+    }
+    else
+    {
+        fprintf(stderr, "[!] Error:\t\tInvalid version of ELF.\n");
+        return 2;
+    }
     return 0;
 }
 
@@ -505,3 +515,21 @@ int check_instructionset(FILE *file)
 
     return 12;
  }
+
+int check_version(FILE *file)
+{
+    unsigned char byte[4];//must be 0x10 0x00 0x00 0x00
+    int i;
+
+    for(i = 0; i < 4; i++)
+    {
+        byte[i] = (char) fgetc(file);
+    }
+
+    if(byte[0] == 0x01 && byte[1] == 0x00 && byte[2] == 0x00 && byte[3] == 0x00)
+    {
+        return 0;
+    }
+
+    return 1;
+}

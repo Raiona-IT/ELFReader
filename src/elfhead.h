@@ -15,5 +15,6 @@ int check_unusedbytes(FILE *file);
 
 int check_type(FILE *file);
 int check_instructionset(FILE *file);
+int check_version(FILE *file);
 
 #endif
